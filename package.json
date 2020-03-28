@@ -1,0 +1,41 @@
+{
+  "name": "socket-game",
+  "version": "1.0.0",
+  "description": "Web Game With socket.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pmh-only/socket-game.git"
+  },
+  "keywords": [
+    "socket.io",
+    "webgame",
+    "websocket"
+  ],
+  "author": "PMH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pmh-only/socket-game/issues"
+  },
+  "homepage": "https://github.com/pmh-only/socket-game#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "crypto-random-string": "^3.2.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "sha256": "^0.2.0",
+    "socket.io": "^2.3.0",
+    "uuid": "^7.0.2"
+  }
+}
