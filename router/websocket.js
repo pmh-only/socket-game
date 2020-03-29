@@ -73,19 +73,8 @@ function fnc (app, session) {
       const query = session.get(uid)
       if (!query) return
 
-      function solve () {
-        session.solve(uid)
-        const map2 = maps[query.data.map]
-        if (map2) query.data.cord = { x: map2.spawn[0], y: map2.spawn[1] }
-        session.push(uid, query.data)
-      }
-
       const map = maps[query.data.map]
       if (!map) return
-
-      if (map.script) {
-        map.script('move', map, query.data, solve)
-      }
 
       if (!query.data.cord) {
         query.data.cord = { x: map.spawn[0], y: map.spawn[1] }
@@ -122,6 +111,17 @@ function fnc (app, session) {
 
       if (map.fills[x]) {
         if (map.fills[x][y] === 1) return cb(_)
+      }
+
+      function solve () {
+        session.solve(uid)
+        const map2 = maps[query.data.map]
+        if (map2) query.data.cord = { x: map2.spawn[0], y: map2.spawn[1] }
+        session.push(uid, query.data)
+      }
+
+      if (map.script) {
+        map.script('move', map, query.data, solve)
       }
       query.data.cord = { x, y }
       session.push(uid, query.data)
