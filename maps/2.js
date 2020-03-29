@@ -1,6 +1,6 @@
 const { random } = require('../utils/utils')
 
-function fnc (event, _mapData, playerData, solve) {
+function fnc (event, _mapData, _playerData, solve) {
   if (event !== 'move') return
 
   /**
