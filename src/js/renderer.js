@@ -83,13 +83,15 @@ function _render (mapData, playerData) {
 
       if (i === playerData.cord.x && j === playerData.cord.y) cell.style.backgroundColor = 'gold'
 
-      const mark = playerData.mark[playerData.map].find((v) => {
-        if (!v) return false
-        return v.x === i && v.y === j
-      })
+      if (playerData.mark[playerData.map]) {
+        const mark = playerData.mark[playerData.map].find((v) => {
+          if (!v) return false
+          return v.x === i && v.y === j
+        })
 
-      if (mark) cell.style.borderColor = '#FF0000A0'
-      else cell.style.borderColor = '#00000010'
+        if (mark) cell.style.borderColor = '#FF0000A0'
+        else cell.style.borderColor = '#00000010'
+      }
     }
   }
 }
