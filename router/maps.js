@@ -10,8 +10,13 @@ function load () {
     if (err) console.log(err)
     else {
       files.forEach((f) => {
-        const map = require(path + '/maps/' + f)
-        maps[parseInt(f.replace('.json', ''))] = map
+        if (f.endsWith('.json')) {
+          const map = require(path + '/maps/' + f)
+          maps[parseInt(f.replace('.json', ''))] = { ...maps[parseInt(f.replace('.json', ''))], ...map }
+        } else if (f.endsWith('.js')) {
+          const script = require(path + '/maps/' + f)
+          maps[parseInt(f.replace('.js', ''))] = { script, scriptRaw: script.toString() }
+        }
       })
     }
   })

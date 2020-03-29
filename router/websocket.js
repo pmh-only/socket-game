@@ -73,38 +73,57 @@ function fnc (app, session) {
       const query = session.get(uid)
       if (!query) return
 
+      function solve () {
+        session.solve(uid)
+        const map2 = maps[query.data.map]
+        if (map2) query.data.cord = { x: map2.spawn[0], y: map2.spawn[1] }
+        session.push(uid, query.data)
+      }
+
       const map = maps[query.data.map]
       if (!map) return
+
+      if (map.script) {
+        map.script('move', map, query.data, solve)
+      }
 
       if (!query.data.cord) {
         query.data.cord = { x: map.spawn[0], y: map.spawn[1] }
       }
 
+      let x = query.data.cord.x
+      let y = query.data.cord.y
+
       switch (key) {
         case 87:
         case 38: {
-          if (query.data.cord.x > 0) query.data.cord.x--
+          if (query.data.cord.x > 0) x = query.data.cord.x - 1
           break
         }
 
         case 68:
         case 39: {
-          if (query.data.cord.y < map.width - 1) query.data.cord.y++
+          if (query.data.cord.y < map.width - 1) y = query.data.cord.y + 1
           break
         }
 
         case 83:
         case 40: {
-          if (query.data.cord.x < map.height - 1) query.data.cord.x++
+          if (query.data.cord.x < map.height - 1) x = query.data.cord.x + 1
           break
         }
 
         case 65:
         case 37: {
-          if (query.data.cord.y > 0) query.data.cord.y--
+          if (query.data.cord.y > 0) y = query.data.cord.y - 1
           break
         }
       }
+
+      if (map.fills[x]) {
+        if (map.fills[x][y] === 1) return cb(_)
+      }
+      query.data.cord = { x, y }
       session.push(uid, query.data)
       return cb(_)
     })

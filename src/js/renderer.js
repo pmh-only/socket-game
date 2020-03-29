@@ -1,4 +1,4 @@
-/* global r0c0 table title */
+/* global r0c0 table title container hljs */
 // eslint-disable-next-line no-unused-vars
 function render (data, socket) {
   if (data.sid !== socket.id) return
@@ -15,7 +15,7 @@ function render (data, socket) {
         if (err2) title.innerText = data.map + '. ' + mapData.name + ' [Error: ' + err2 + ']'
         socket.emit('player', data.uid, (err3, playerData) => {
           if (err3) title.innerText = playerData.map + '. ' + mapData.name + ' [Error: ' + err3 + ']'
-          socket.emit('map', data.uid, data.map, (err4, mapData2) => {
+          socket.emit('map', data.uid, playerData.map, (err4, mapData2) => {
             if (err4) title.innerText = playerData.map + '. ' + mapData2.name + ' [Error: ' + err4 + ']'
             _render(mapData2, playerData)
           })
@@ -45,6 +45,12 @@ function _render (mapData, playerData) {
           break
         }
 
+        case 2: {
+          cell.style.backgroundColor = 'skyblue'
+          break
+        }
+
+        case 1:
         default: {
           cell.style.backgroundColor = 'black'
         }
@@ -57,12 +63,21 @@ function _render (mapData, playerData) {
             const f = fill * -1 - 1
             if (mapData.ments[f]) {
               document.getElementsByClassName('ment')[0].innerHTML = mapData.ments[f]
+              container.style.opacity = '0.6'
             }
           }
+        }
+      } else if (fill === 2) {
+        if (i === playerData.cord.x && j === playerData.cord.y) {
+          document.getElementsByClassName('ment')[0].innerHTML =
+            '<code class="code">' + mapData.scriptRaw.split('\n').join('<br/>').split(' ').join('&nbsp;') + '</code>'
+          container.style.opacity = '0.6'
+          hljs.highlightBlock(document.getElementsByClassName('code')[0])
         }
       } else {
         if (i === playerData.cord.x && j === playerData.cord.y) {
           document.getElementsByClassName('ment')[0].innerHTML = ''
+          container.style.opacity = '1'
         }
       }
 

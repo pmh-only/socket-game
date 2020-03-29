@@ -6,6 +6,7 @@
  */
 const table = document.getElementsByClassName('rpoint')[0]
 const title = document.getElementsByClassName('mapTitle')[0]
+const container = document.getElementsByClassName('container')[0]
 const query = new URLSearchParams(window.location.search)
 const uid = query.get('uid')
 
