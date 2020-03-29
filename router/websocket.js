@@ -80,8 +80,11 @@ function fnc (app, session) {
         query.data.cord = { x: map.spawn[0], y: map.spawn[1] }
       }
 
+      if (!query.data.mark[query.data.map]) query.data.mark[query.data.map] = []
+
       let x = query.data.cord.x
       let y = query.data.cord.y
+      let mark = false
 
       switch (key) {
         case 87:
@@ -107,23 +110,44 @@ function fnc (app, session) {
           if (query.data.cord.y > 0) y = query.data.cord.y - 1
           break
         }
+
+        case 32: {
+          if (query.data.map > 4) mark = true
+          break
+        }
       }
 
       if (map.fills[x]) {
         if (map.fills[x][y] === 1) return cb(_)
       }
 
+      query.data.cord = { x, y }
+
       function solve () {
         session.solve(uid)
-        const map2 = maps[query.data.map]
+        const map2 = maps[session.get(uid).data.map]
         if (map2) query.data.cord = { x: map2.spawn[0], y: map2.spawn[1] }
         session.push(uid, query.data)
       }
 
-      if (map.script) {
-        map.script('move', map, query.data, solve)
+      if (mark) {
+        const found = query.data.mark[query.data.map].findIndex((v) => {
+          if (!v) return false
+          return v.x === x && v.y === y
+        })
+        if (found < 0) {
+          query.data.mark[query.data.map].push({ x, y })
+          map.script('mark', map, query.data, solve)
+        } else {
+          query.data.mark[query.data.map].splice(found, 1)
+          map.script('unmark', map, query.data, solve)
+        }
+      } else {
+        if (map.script) {
+          map.script('move', map, query.data, solve)
+        }
       }
-      query.data.cord = { x, y }
+
       session.push(uid, query.data)
       return cb(_)
     })

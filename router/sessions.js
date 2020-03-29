@@ -1,6 +1,7 @@
 /**
  * @typedef {{ip: String, uid: String, data: data}} session
- * @typedef {{inited: boolean, name: String, map: Number, cord: { x: Number, y: Number }}} data
+ * @typedef {{ x: Number, y: Number }} cordData
+ * @typedef {{inited: boolean, name: String, map: Number, cord: cordData, mark: cordData[][]}} data
  */
 
 /**
@@ -16,7 +17,7 @@ const { writeFileSync } = require('fs')
  * @type {session[]}
  */
 const sessions = require('../data/sessions.json')
-const defaultData = (ip) => { return { ip: sha256(ip), uid: uuid(), data: { inited: false }, solve } }
+const defaultData = (ip) => { return { ip: sha256(ip), uid: uuid(), data: { inited: false } } }
 const save = () => writeFileSync('data/sessions.json', JSON.stringify(sessions, _, 2))
 const checkData = (ip, uid) => sessions.find((s) => s.ip === sha256(ip || 'null') || s.uid === uid)
 const checkDataIndex = (ip, uid) => sessions.findIndex((s) => s.ip === ip || s.uid === uid)
@@ -55,7 +56,7 @@ function push (uid, data) {
 function init (uid) {
   if (!checkData(_, uid)) return
   if (checkData(_, uid).data.inited) return
-  push(uid, { inited: true, name: 'Guest #' + crypto({ length: 5 }), createdAt: new Date(), map: 0, player: null })
+  push(uid, { inited: true, name: 'Guest #' + crypto({ length: 5 }), createdAt: new Date(), map: 0, cord: null, mark: [] })
 }
 
 /**
