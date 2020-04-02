@@ -2,10 +2,7 @@
  * @param {import('../router/sessions').data} playerData
  */
 function fnc (event, _mapData, playerData, solve) {
-  if (event !== 'move') return
-  if (playerData.cord.x === 0) {
-    solve()
-  }
+  /* 아직 덜만듬 */
 }
 
 module.exports = fnc

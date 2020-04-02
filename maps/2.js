@@ -1,5 +1,8 @@
 const { random } = require('../utils/utils')
 
+/**
+ * @param {import('../router/sessions').data} playerData
+ */
 function fnc (event, _mapData, _playerData, solve) {
   if (event !== 'move') return
 

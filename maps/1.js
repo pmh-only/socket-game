@@ -1,3 +1,6 @@
+/**
+ * @param {import('../router/sessions').data} playerData
+ */
 function fnc (event, _mapData, playerData, solve) {
   if (event !== 'move') return
 
