@@ -11,7 +11,10 @@ const _ = null
 const uuid = require('uuid').v4
 const sha256 = require('sha256')
 const crypto = require('crypto-random-string')
-const { writeFileSync } = require('fs')
+const { existsSync, mkdirSync, writeFileSync } = require('fs')
+
+if (!existsSync('../data/')) mkdirSync('../data')
+if (!existsSync('../data/sessions.json')) writeFileSync('../data/sessions.json', '[]')
 
 /**
  * @type {session[]}
@@ -22,7 +25,7 @@ const save = () => writeFileSync('data/sessions.json', JSON.stringify(sessions, 
 const checkData = (ip, uid) => sessions.find((s) => s.ip === sha256(ip || 'null') || s.uid === uid)
 const checkDataIndex = (ip, uid) => sessions.findIndex((s) => s.ip === ip || s.uid === uid)
 
-setInterval(save, 2000)
+setInterval(save, 500)
 
 /**
  * @param {String} ip
