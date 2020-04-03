@@ -90,7 +90,7 @@ function _render (mapData, playerData) {
         })
 
         if (mark) cell.style.borderColor = '#FF0000A0'
-        else cell.style.borderColor = '#00000010'
+        else cell.style.borderColor = '#00000050'
       }
     }
   }
